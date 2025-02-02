@@ -1,3 +1,4 @@
+import 'package:android_popular_git_repos/core/constants/app_constants.dart';
 import 'package:android_popular_git_repos/core/network/network_info.dart';
 import 'package:android_popular_git_repos/core/theme/app_theme.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -35,7 +36,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Popular GitRepos',
+      debugShowCheckedModeBanner: false,
+      title: AppConstants.appName,
       theme: AppTheme.lightTheme,
       home: Scaffold(
         appBar: AppBar(
@@ -46,6 +48,7 @@ class _MyAppState extends State<MyApp> {
             children: [
               const Text('Hello World'),
               Text(isConnected?'Connected':'Not Connected'),
+              Text(networkInfo.isConnected.toString()),
             ],
           ),
         ),
