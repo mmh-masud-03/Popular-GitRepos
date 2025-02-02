@@ -1,4 +1,5 @@
 import 'package:android_popular_git_repos/core/constants/app_constants.dart';
+import 'package:android_popular_git_repos/core/network/api_service.dart';
 import 'package:android_popular_git_repos/core/network/network_info.dart';
 import 'package:android_popular_git_repos/core/theme/app_theme.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -16,19 +17,31 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
- late NetworkInfo networkInfo;
- bool isConnected=false;
+  late NetworkInfo networkInfo;
+  bool isConnected = false;
+  List<dynamic> repos = [];
+
   @override
   void initState() {
-
     super.initState();
-    networkInfo=NetworkInfo(Connectivity());
+    networkInfo = NetworkInfo(Connectivity());
     checkConnection();
+    fetchRepos();
   }
-  Future<void> checkConnection() async{
-    isConnected= await networkInfo.isConnected;
+
+  Future<void> checkConnection() async {
+    isConnected = await networkInfo.isConnected;
     setState(() {
-      isConnected=isConnected;
+      isConnected = isConnected;
+    });
+  }
+
+  Future<dynamic> fetchRepos() async {
+    var response = await ApiService.get(
+        '${AppConstants.gitHubApiBaseUrl}search/repositories?q=Android&sort=stars');
+    var repoList = response['items'];
+    setState(() {
+      repos = repoList;
     });
   }
 
@@ -44,16 +57,24 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Popular GitRepos'),
         ),
         body: Center(
-          child: Column(
-            children: [
-              const Text('Hello World'),
-              Text(isConnected?'Connected':'Not Connected'),
-              Text(networkInfo.isConnected.toString()),
-            ],
-          ),
+          child: repos.isEmpty
+              ? const CircularProgressIndicator()
+              : Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(repos[index]['name']),
+                            subtitle: Text(repos[index]['description']),
+                            trailing: Text(repos[index]['stargazers_count'].toString()),
+                          );
+                        }),
+                    ),
+                    
+                  ],
+                ),
         ),
       ),
     );
   }
 }
-
