@@ -2,8 +2,11 @@ import 'package:android_popular_git_repos/core/constants/app_constants.dart';
 import 'package:android_popular_git_repos/core/network/api_service.dart';
 import 'package:android_popular_git_repos/core/network/network_info.dart';
 import 'package:android_popular_git_repos/core/theme/app_theme.dart';
+import 'package:android_popular_git_repos/features/repository/data/datasources/remote_data_source.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+
+import 'features/repository/data/models/repository_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,11 +40,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<dynamic> fetchRepos() async {
-    var response = await ApiService.get(
-        '${AppConstants.gitHubApiBaseUrl}search/repositories?q=Android&sort=stars');
-    var repoList = response['items'];
+    var response = await RemoteDataSourceImpl(ApiService()).getRepositories();
     setState(() {
-      repos = repoList;
+      repos = response;
     });
   }
 
@@ -65,11 +66,11 @@ class _MyAppState extends State<MyApp> {
                       child: ListView.builder(
                           itemCount: repos.length,
                           itemBuilder: (context, index) {
+                            final repo = repos[index] as RepositoryModel;
                             return ListTile(
-                              title: Text(repos[index]['name']),
-                              subtitle: Text(repos[index]['description']),
-                              trailing: Text(
-                                  repos[index]['stargazers_count'].toString()),
+                              title: Text(repo.name),
+                              subtitle: Text(repo.description),
+                              trailing: Text(repo.ownerName),
                             );
                           }),
                     ),
