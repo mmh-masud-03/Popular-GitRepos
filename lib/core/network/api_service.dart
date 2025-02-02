@@ -1,20 +1,14 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
+import '../../core/constants/app_constants.dart';
 
-class ApiService{
- static Future<dynamic> get(String url) async{
-    try{
-      var response = await http.get(Uri.parse(url));
-      if(response.statusCode == 200){
-        var responseBody= response.body;
-        var responseJson = json.decode(responseBody);
-        return responseJson;
-      }else{
-        throw Exception('Failed to load data!');
-      }
-    }catch(e){
-      print(e);
+class ApiService {
+  Future<dynamic> get(String endpoint) async {
+    final response = await http.get(Uri.parse("${AppConstants.gitHubApiBaseUrl}$endpoint"));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load data');
     }
   }
 }

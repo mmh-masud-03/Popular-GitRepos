@@ -62,15 +62,17 @@ class _MyAppState extends State<MyApp> {
               : Column(
                   children: [
                     Expanded(
-                      child: ListView.builder(itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(repos[index]['name']),
-                            subtitle: Text(repos[index]['description']),
-                            trailing: Text(repos[index]['stargazers_count'].toString()),
-                          );
-                        }),
+                      child: ListView.builder(
+                          itemCount: repos.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(repos[index]['name']),
+                              subtitle: Text(repos[index]['description']),
+                              trailing: Text(
+                                  repos[index]['stargazers_count'].toString()),
+                            );
+                          }),
                     ),
-                    
                   ],
                 ),
         ),
