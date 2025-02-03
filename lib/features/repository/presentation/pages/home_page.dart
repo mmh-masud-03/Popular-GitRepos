@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -54,7 +55,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       return;
     }
 
-    if (isConnected) {
+    if (isConnected ) {
       final shouldUpdate = await localDataSource.shouldUpdateData();
       if (shouldUpdate) {
         ref.invalidate(repositoryProvider); // Refresh repositories
@@ -103,8 +104,9 @@ class _HomePageState extends ConsumerState<HomePage> {
               return ListTile(
                 title: Text(repo.name),
                 subtitle: Text(repo.description),
+
                 leading: CircleAvatar(
-                  backgroundImage: NetworkImage(repo.ownerAvatarUrl),
+                  backgroundImage: CachedNetworkImageProvider(repo.ownerAvatarUrl),
                 ),
                 onTap: () {
                   Navigator.push(

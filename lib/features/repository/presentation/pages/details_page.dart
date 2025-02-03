@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../domain/entities/repository_entity.dart';
@@ -23,7 +24,7 @@ class RepoDetailsPage extends StatelessWidget {
             Center(
               child: CircleAvatar(
                 radius: 60,
-                backgroundImage: NetworkImage(repository.ownerAvatarUrl),
+                backgroundImage: CachedNetworkImageProvider(repository.ownerAvatarUrl),
               ),
             ),
             const SizedBox(height: 16),

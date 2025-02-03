@@ -44,6 +44,7 @@ class LocalDataSourceImpl implements LocalDataSource {
         description TEXT,
         ownerName TEXT,
         ownerAvatarUrl TEXT,
+        ownerId TEXT,
         updatedAt TEXT
       )
     ''');
