@@ -1,18 +1,83 @@
+import 'package:android_popular_git_repos/features/repository/data/models/repository_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../di/injector.dart';
 import '../../domain/entities/repository_entity.dart';
 import '../../domain/usecases/get_repositories.dart';
 
+// final repositoryProvider = FutureProvider<List<RepositoryEntity>>((ref) async {
+//   final getRepositories = ref.watch(getRepositoriesProvider);
+//   final localDataSource = ref.watch(localDataSourceProvider);
+//   final networkInfo = ref.watch(networkInfoProvider);
+//   // Check for local data first
+//   final cachedRepositories = await localDataSource.getCachedRepositories();
+//   if (cachedRepositories.isNotEmpty || !await networkInfo.isConnected) {
+//     return cachedRepositories.map((model) => model.toEntity()).toList();
+//   }
+//   if (await networkInfo.isConnected && await localDataSource.shouldUpdateData()) {
+//     try {
+//       final repositories = await getRepositories.call();
+//       // Convert RepositoryEntity to RepositoryModel
+//       final repositoryModels = repositories.map((entity) => RepositoryModel.fromEntity(entity)).toList();
+//       await localDataSource.cacheRepositories(repositoryModels);
+//       return repositories;
+//     } catch (e, stackTrace) {
+//       // Log the error and stack trace for better debugging
+//       print('Error loading repositories: $e');
+//       print('Stack trace: $stackTrace');
+//       throw Exception("Failed to load repositories");
+//     }
+//   } else {
+//     // If no internet connection, return an empty list or handle accordingly
+//     return [];
+//   }
+// });
 final repositoryProvider = FutureProvider<List<RepositoryEntity>>((ref) async {
   final getRepositories = ref.watch(getRepositoriesProvider);
-  try {
-    return await getRepositories.call();
-  } catch (e, stackTrace) {
-    // Log the error and stack trace for better debugging
-    print('Error loading repositories: $e');
-    print('Stack trace: $stackTrace');
-    throw Exception("Failed to load repositories");
+  final localDataSource = ref.watch(localDataSourceProvider);
+  final networkInfo = ref.watch(networkInfoProvider);
+
+  final cachedRepositories = await localDataSource.getCachedRepositories();
+
+  // Return local data if available
+  if (cachedRepositories.isNotEmpty) {
+    // Check if we should update the data
+    if (await networkInfo.isConnected && await localDataSource.shouldUpdateData()) {
+      print('Updating data...');
+      try {
+        final repositories = await getRepositories.call();
+        final repositoryModels = repositories.map((e) => RepositoryModel.fromEntity(e)).toList();
+
+        // Cache new data and update last update time
+        await localDataSource.cacheRepositories(repositoryModels);
+        // ✅ Update last update time after successful API call
+        await localDataSource.updateLastUpdateTime();
+        return repositories;
+      } catch (e, stackTrace) {
+        print('Error loading repositories: $e');
+        print('Stack trace: $stackTrace');
+      }
+    }
+    print('Returning cached data...');
+    return cachedRepositories.map((e) => e.toEntity()).toList();
   }
+
+  // If no local data, fetch from API (only if connected)
+  if (await networkInfo.isConnected) {
+    print('Fetching data from API...');
+    try {
+      final repositories = await getRepositories.call();
+      final repositoryModels = repositories.map((e) => RepositoryModel.fromEntity(e)).toList();
+      await localDataSource.cacheRepositories(repositoryModels);
+      // ✅ Update last update time after successful API call
+      await localDataSource.updateLastUpdateTime();
+      return repositories;
+    } catch (e, stackTrace) {
+      print('Error loading repositories: $e');
+      print('Stack trace: $stackTrace');
+    }
+  }
+print('Returning empty list...');
+  return [];
 });
 
 final getRepositoriesProvider = Provider<GetRepositories>((ref) {

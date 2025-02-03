@@ -2,14 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/theme/theme_provider.dart';
+import '../../../../di/injector.dart';
+import '../../../common/presentation/widgets/custom_drawer.dart';
 import '../providers/repository_provider.dart';
 import 'details_page.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    _refreshDataIfNeeded();
+  }
+
+  Future<void> _refreshDataIfNeeded() async {
+    final localDataSource = ref.read(localDataSourceProvider);
+    final networkInfo = ref.read(networkInfoProvider);
+
+    final isConnected = await networkInfo.isConnected;
+    final shouldUpdate = await localDataSource.shouldUpdateData();
+
+    if (isConnected && shouldUpdate) {
+      ref.invalidate(repositoryProvider); // Refresh repository provider
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final repoAsyncValue = ref.watch(repositoryProvider);
 
     return Scaffold(
@@ -26,6 +51,10 @@ class HomePage extends ConsumerWidget {
           ),
         ],
       ),
+      drawer: CustomDrawer(
+        onAllRepositoriesTap: () {},
+        onFavoritesTap: () {},
+      ),
       body: repoAsyncValue.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => Center(child: Text('Error: $error')),
@@ -40,9 +69,6 @@ class HomePage extends ConsumerWidget {
               return ListTile(
                 title: Text(repo.name),
                 subtitle: Text(repo.description),
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(repo.ownerAvatarUrl),
-                ),
                 onTap: () {
                   Navigator.push(
                     context,

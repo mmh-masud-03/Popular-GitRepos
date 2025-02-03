@@ -47,4 +47,14 @@ class RepositoryModel {
       updatedAt: updatedAt,
     );
   }
+  // Convert RepositoryEntity to RepositoryModel
+  factory RepositoryModel.fromEntity(RepositoryEntity entity) {
+    return RepositoryModel(
+      name: entity.name,
+      description: entity.description,
+      ownerName: entity.ownerName,
+      ownerAvatarUrl: entity.ownerAvatarUrl,
+      updatedAt: entity.updatedAt,
+    );
+  }
 }

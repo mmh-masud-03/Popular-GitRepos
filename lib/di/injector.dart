@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:android_popular_git_repos/core/network/api_service.dart';
 import 'package:android_popular_git_repos/core/network/network_info.dart';
@@ -30,3 +31,12 @@ Future<void> initDependencies() async {
   // Use Cases
   sl.registerLazySingleton(() => GetRepositories(sl()));
 }
+
+// Providers for Riverpod
+final localDataSourceProvider = Provider<LocalDataSource>((ref) {
+  return sl<LocalDataSource>();
+});
+
+final networkInfoProvider = Provider<NetworkInfo>((ref) {
+  return sl<NetworkInfo>();
+});

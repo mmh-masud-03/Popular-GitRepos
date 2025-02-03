@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -8,10 +8,13 @@ import '../models/repository_model.dart';
 abstract class LocalDataSource {
   Future<void> cacheRepositories(List<RepositoryModel> repositories);
   Future<List<RepositoryModel>> getCachedRepositories();
+  Future<bool> shouldUpdateData();
+  Future<void> updateLastUpdateTime();
 }
 
 class LocalDataSourceImpl implements LocalDataSource {
   static Database? _database;
+  static const lastUpdateKey = 'last_update_time';
 
   // Singleton instance to ensure only one database connection
   Future<Database> get database async {
@@ -69,5 +72,19 @@ class LocalDataSourceImpl implements LocalDataSource {
 
     // Convert the raw data into RepositoryModel objects
     return result.map((json) => RepositoryModel.fromJson(json)).toList();
+  }
+  @override
+  Future<bool> shouldUpdateData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final lastUpdateMillis = prefs.getInt(lastUpdateKey) ?? 0;
+    final lastUpdate = DateTime.fromMillisecondsSinceEpoch(lastUpdateMillis);
+    final now = DateTime.now();
+
+    return now.difference(lastUpdate).inMinutes > 1;
+  }
+  @override
+  Future<void> updateLastUpdateTime() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(lastUpdateKey, DateTime.now().millisecondsSinceEpoch);
   }
 }
