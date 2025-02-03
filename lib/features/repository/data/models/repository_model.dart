@@ -18,11 +18,11 @@ class RepositoryModel {
   // Convert JSON to RepositoryModel
   factory RepositoryModel.fromJson(Map<String, dynamic> json) {
     return RepositoryModel(
-      name: json['name'] ?? 'Unknown', // Provide a default value if null
+      name: json['name'] ?? 'Unknown',
       description: json['description'] ?? 'No description available.',
-      ownerName: json['ownerName'] ?? 'Unknown',
-      ownerAvatarUrl: json['ownerAvatarUrl'] ?? '',
-      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : DateTime.now(),
+      ownerName: json['owner']?['login'] ?? 'Unknown',
+      ownerAvatarUrl: json['owner']?['avatar_url'] ?? '',
+      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : DateTime.now(),
     );
   }
 
@@ -47,6 +47,7 @@ class RepositoryModel {
       updatedAt: updatedAt,
     );
   }
+
   // Convert RepositoryEntity to RepositoryModel
   factory RepositoryModel.fromEntity(RepositoryEntity entity) {
     return RepositoryModel(

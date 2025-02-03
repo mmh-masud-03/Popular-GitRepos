@@ -35,7 +35,7 @@ final repositoryProvider = FutureProvider<List<RepositoryEntity>>((ref) async {
   }
 
   // If no local data, fetch from API (only if connected)
-  if (await networkInfo.isConnected) {
+  if (await networkInfo.isConnected && cachedRepositories.isEmpty) {
     print('Fetching data from API...');
     try {
       final repositories = await getRepositories.call();

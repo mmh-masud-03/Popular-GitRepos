@@ -103,6 +103,9 @@ class _HomePageState extends ConsumerState<HomePage> {
               return ListTile(
                 title: Text(repo.name),
                 subtitle: Text(repo.description),
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(repo.ownerAvatarUrl),
+                ),
                 onTap: () {
                   Navigator.push(
                     context,

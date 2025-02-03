@@ -19,7 +19,7 @@ class RepoDetailsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Owner's Avatar
+            //Owner's Avatar
             Center(
               child: CircleAvatar(
                 radius: 60,
