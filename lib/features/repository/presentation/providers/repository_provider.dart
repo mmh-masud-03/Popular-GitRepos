@@ -4,33 +4,6 @@ import '../../../../di/injector.dart';
 import '../../domain/entities/repository_entity.dart';
 import '../../domain/usecases/get_repositories.dart';
 
-// final repositoryProvider = FutureProvider<List<RepositoryEntity>>((ref) async {
-//   final getRepositories = ref.watch(getRepositoriesProvider);
-//   final localDataSource = ref.watch(localDataSourceProvider);
-//   final networkInfo = ref.watch(networkInfoProvider);
-//   // Check for local data first
-//   final cachedRepositories = await localDataSource.getCachedRepositories();
-//   if (cachedRepositories.isNotEmpty || !await networkInfo.isConnected) {
-//     return cachedRepositories.map((model) => model.toEntity()).toList();
-//   }
-//   if (await networkInfo.isConnected && await localDataSource.shouldUpdateData()) {
-//     try {
-//       final repositories = await getRepositories.call();
-//       // Convert RepositoryEntity to RepositoryModel
-//       final repositoryModels = repositories.map((entity) => RepositoryModel.fromEntity(entity)).toList();
-//       await localDataSource.cacheRepositories(repositoryModels);
-//       return repositories;
-//     } catch (e, stackTrace) {
-//       // Log the error and stack trace for better debugging
-//       print('Error loading repositories: $e');
-//       print('Stack trace: $stackTrace');
-//       throw Exception("Failed to load repositories");
-//     }
-//   } else {
-//     // If no internet connection, return an empty list or handle accordingly
-//     return [];
-//   }
-// });
 final repositoryProvider = FutureProvider<List<RepositoryEntity>>((ref) async {
   final getRepositories = ref.watch(getRepositoriesProvider);
   final localDataSource = ref.watch(localDataSourceProvider);
@@ -49,7 +22,7 @@ final repositoryProvider = FutureProvider<List<RepositoryEntity>>((ref) async {
 
         // Cache new data and update last update time
         await localDataSource.cacheRepositories(repositoryModels);
-        // ✅ Update last update time after successful API call
+        //  Update last update time after successful API call
         await localDataSource.updateLastUpdateTime();
         return repositories;
       } catch (e, stackTrace) {
@@ -68,7 +41,7 @@ final repositoryProvider = FutureProvider<List<RepositoryEntity>>((ref) async {
       final repositories = await getRepositories.call();
       final repositoryModels = repositories.map((e) => RepositoryModel.fromEntity(e)).toList();
       await localDataSource.cacheRepositories(repositoryModels);
-      // ✅ Update last update time after successful API call
+      // Update last update time after successful API call
       await localDataSource.updateLastUpdateTime();
       return repositories;
     } catch (e, stackTrace) {
