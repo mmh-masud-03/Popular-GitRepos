@@ -12,7 +12,6 @@ class RepositoryModel {
   final String? licenseName;
   final int openIssuesCount;
   final String? homepage;
-  final List<String> topics;
 
   RepositoryModel({
     required this.name,
@@ -26,7 +25,6 @@ class RepositoryModel {
     this.licenseName,
     required this.openIssuesCount,
     this.homepage,
-    required this.topics,
   });
 
   // Convert JSON to RepositoryModel
@@ -43,7 +41,6 @@ class RepositoryModel {
       licenseName: json['license']?['name'],
       openIssuesCount: json['open_issues_count'] ?? 0,
       homepage: json['homepage'],
-      topics: List<String>.from(json['topics'] ?? []),
     );
   }
 
@@ -61,7 +58,6 @@ class RepositoryModel {
       'licenseName': licenseName,
       'openIssuesCount': openIssuesCount,
       'homepage': homepage,
-      'topics': topics,
     };
   }
 
@@ -79,7 +75,6 @@ class RepositoryModel {
       licenseName: licenseName,
       openIssuesCount: openIssuesCount,
       homepage: homepage,
-      topics: topics,
     );
   }
 
@@ -97,7 +92,6 @@ class RepositoryModel {
       licenseName: entity.licenseName,
       openIssuesCount: entity.openIssuesCount,
       homepage: entity.homepage,
-      topics: entity.topics,
     );
   }
 }

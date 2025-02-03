@@ -10,7 +10,6 @@ class RepositoryEntity {
   final String? licenseName; // Nullable because not all repositories have a license
   final int openIssuesCount;
   final String? homepage; // Nullable because not all repositories have a homepage
-  final List<String> topics; // List of topics/tags associated with the repository
 
   RepositoryEntity({
     required this.name,
@@ -24,7 +23,6 @@ class RepositoryEntity {
     this.licenseName,
     required this.openIssuesCount,
     this.homepage,
-    required this.topics,
   });
 
   // Factory method to create a RepositoryEntity from JSON
@@ -41,7 +39,6 @@ class RepositoryEntity {
       licenseName: json['licenseName'],
       openIssuesCount: json['openIssuesCount'] ?? 0,
       homepage: json['homepage'],
-      topics: List<String>.from(json['topics'] ?? []),
     );
   }
 
@@ -59,7 +56,6 @@ class RepositoryEntity {
       'licenseName': licenseName,
       'openIssuesCount': openIssuesCount,
       'homepage': homepage,
-      'topics': topics,
     };
   }
 }

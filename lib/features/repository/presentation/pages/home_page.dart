@@ -104,7 +104,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               return ListTile(
                 title: Text(repo.name),
                 subtitle: Text(repo.description),
-
+trailing: Text('Forks: ${repo.forksCount}'),
                 leading: CircleAvatar(
                   backgroundImage: CachedNetworkImageProvider(repo.ownerAvatarUrl),
                 ),

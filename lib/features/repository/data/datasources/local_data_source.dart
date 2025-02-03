@@ -39,13 +39,18 @@ class LocalDataSourceImpl implements LocalDataSource {
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE repositories (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        description TEXT,
-        ownerName TEXT,
-        ownerAvatarUrl TEXT,
-        ownerId TEXT,
-        updatedAt TEXT
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT,
+      description TEXT,
+      ownerName TEXT,
+      ownerAvatarUrl TEXT,
+      forksCount INTEGER,
+      stargazersCount INTEGER,
+      language TEXT,
+      licenseName TEXT,
+      openIssuesCount INTEGER,
+      homepage TEXT,
+      updatedAt INTEGER
       )
     ''');
   }
