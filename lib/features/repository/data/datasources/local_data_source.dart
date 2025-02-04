@@ -1,7 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../models/repository_model.dart';
 
@@ -25,8 +24,7 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   // Initialize the database
   Future<Database> _initDatabase() async {
-    final documentsDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentsDirectory.path, 'github_repos.db');
+    final path = join(await getDatabasesPath(), 'git_repositories.db');
 
     return await openDatabase(
       path,
@@ -39,7 +37,7 @@ class LocalDataSourceImpl implements LocalDataSource {
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE repositories (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id INTEGER PRIMARY KEY ,
       name TEXT,
       description TEXT,
       ownerName TEXT,
@@ -58,24 +56,40 @@ class LocalDataSourceImpl implements LocalDataSource {
   @override
   Future<void> cacheRepositories(List<RepositoryModel> repositories) async {
     final db = await database;
-    // Clear existing data before inserting new data
-    await db.delete('repositories');
 
-    // Insert each repository into the database
-    for (final repo in repositories) {
-      await db.insert(
-        'repositories',
-        repo.toJson(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-    }
+    // Start a transaction to ensure atomic operation
+    await db.transaction((txn) async {
+      // Completely clear the existing table
+      await txn.delete('repositories');
+
+      // Batch insert to improve performance
+      final batch = txn.batch();
+      for (final repo in repositories) {
+        batch.insert(
+          'repositories',
+          repo.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
+
+      // Commit the batch
+      await batch.commit(noResult: true);
+      print('DEBUG: Cached ${repositories.length} repositories-----------------------------------');
+    });
   }
 
   @override
   Future<List<RepositoryModel>> getCachedRepositories() async {
     final db = await database;
     final result = await db.query('repositories');
-
+    print('DEBUG: Total Repositories in Database: ${result.length}');
+    for (var repo in result) {
+      print('Repo Name: ${repo['name']}');
+      print('Owner: ${repo['ownerName']}');
+      print('Stars: ${repo['stargazersCount']}');
+      print('---');
+    }
+    print('Got from cache: ${result.length} repositories');
     // Convert the raw data into RepositoryModel objects
     return result.map((json) => RepositoryModel.fromJson(json)).toList();
   }
@@ -85,7 +99,7 @@ class LocalDataSourceImpl implements LocalDataSource {
     final lastUpdateMillis = prefs.getInt(lastUpdateKey) ?? 0;
     final lastUpdate = DateTime.fromMillisecondsSinceEpoch(lastUpdateMillis);
     final now = DateTime.now();
-
+ print('DEBUG: Last Update Time: $lastUpdate');
     return now.difference(lastUpdate).inMinutes > 1;
   }
   @override

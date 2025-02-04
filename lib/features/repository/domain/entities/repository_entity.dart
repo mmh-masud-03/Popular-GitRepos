@@ -42,6 +42,7 @@ class RepositoryEntity {
     );
   }
 
+
   // Convert RepositoryEntity to JSON
   Map<String, dynamic> toJson() {
     return {

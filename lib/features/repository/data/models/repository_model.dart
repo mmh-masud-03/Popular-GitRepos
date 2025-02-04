@@ -33,7 +33,7 @@ class RepositoryModel {
       name: json['name'] ?? 'Unknown',
       description: json['description'] ?? 'No description available.',
       ownerName: json['owner']?['login'] ?? 'Unknown',
-      ownerAvatarUrl: json['owner']?['avatar_url'] ?? '',
+      ownerAvatarUrl: json['owner']?['avatar_url'] ?? 'https://raw.githubusercontent.com/gist/johan/1007813/raw/a25829510f049194b6404a8f98d22978e8744a6f/octocat.svg',
       updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : DateTime.now(),
       forksCount: json['forks_count'] ?? 0,
       stargazersCount: json['stargazers_count'] ?? 0,
