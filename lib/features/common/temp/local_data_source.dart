@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-import '../models/repository_model.dart';
+import 'repository_model.dart';
 
 abstract class LocalDataSource {
   Future<void> cacheRepositories(List<RepositoryModel> repositories);

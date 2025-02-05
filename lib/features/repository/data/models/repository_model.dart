@@ -1,97 +1,126 @@
-import '../../domain/entities/repository_entity.dart';
+// lib/features/home/data/models/repository_model.dart
+import 'package:popular_git_repo/features/home/domain/entities/repository.dart';
 
-class RepositoryModel {
-  final String name;
-  final String description;
-  final String ownerName;
-  final String ownerAvatarUrl;
-  final DateTime updatedAt;
-  final int forksCount;
-  final int stargazersCount;
-  final String? language;
-  final String? licenseName;
-  final int openIssuesCount;
-  final String? homepage;
-
-  RepositoryModel({
-    required this.name,
-    required this.description,
-    required this.ownerName,
-    required this.ownerAvatarUrl,
-    required this.updatedAt,
-    required this.forksCount,
-    required this.stargazersCount,
-    this.language,
-    this.licenseName,
-    required this.openIssuesCount,
-    this.homepage,
+class RepositoryModel extends Repository {
+  const RepositoryModel({
+    required super.id,
+    required super.name,
+    required super.description,
+    required super.owner,
+    required super.starCount,
+    required super.lastUpdated,
+    required super.fork,
+    required super.forksCount,
+    required super.hasDownloads,
+    required super.language,
+    super.license,
+    required super.visibility,
+    required super.topics,
+    required super.homepage,
+    required super.openIssuesCount,
+    required super.hasIssues,
+    required super.hasProjects,
+    required super.hasWiki,
+    required super.hasDiscussions,
   });
 
-  // Convert JSON to RepositoryModel
   factory RepositoryModel.fromJson(Map<String, dynamic> json) {
     return RepositoryModel(
-      name: json['name'] ?? 'Unknown',
-      description: json['description'] ?? 'No description available.',
-      ownerName: json['owner']?['login'] ?? 'Unknown',
-      ownerAvatarUrl: json['owner']?['avatar_url'] ?? 'https://raw.githubusercontent.com/gist/johan/1007813/raw/a25829510f049194b6404a8f98d22978e8744a6f/octocat.svg',
-      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : DateTime.now(),
+      id: json['id'],
+      name: json['name'],
+      description: json['description'] ?? '',
+      owner: OwnerModel.fromJson(json['owner']),
+      starCount: json['stargazers_count'],
+      lastUpdated: DateTime.parse(json['updated_at']),
+      fork: json['fork'] ?? false,
       forksCount: json['forks_count'] ?? 0,
-      stargazersCount: json['stargazers_count'] ?? 0,
-      language: json['language'],
-      licenseName: json['license']?['name'],
+      hasDownloads: json['has_downloads'] ?? false,
+      language: json['language'] ?? '',
+      license: json['license'] != null
+          ? License(
+        key: json['license']['key'],
+        name: json['license']['name'],
+      )
+          : null,
+      visibility: json['visibility'] ?? 'public',
+      topics: List<String>.from(json['topics'] ?? []),
+      homepage: json['homepage'] ?? '',
       openIssuesCount: json['open_issues_count'] ?? 0,
-      homepage: json['homepage'],
+      hasIssues: json['has_issues'] ?? false,
+      hasProjects: json['has_projects'] ?? false,
+      hasWiki: json['has_wiki'] ?? false,
+      hasDiscussions: json['has_discussions'] ?? false,
     );
   }
 
-  // Convert RepositoryModel to JSON
-  Map<String, dynamic> toJson() {
+  factory RepositoryModel.fromDb(Map<String, dynamic> map) {
+    return RepositoryModel(
+      id: map['id'],
+      name: map['name'],
+      description: map['description'],
+      owner: OwnerModel(
+        login: map['owner_login'],
+        avatarUrl: map['owner_avatar_url'],
+      ),
+      starCount: map['star_count'],
+      lastUpdated: DateTime.parse(map['last_updated']),
+      fork: map['fork'] == 1,
+      forksCount: map['forks_count'],
+      hasDownloads: map['has_downloads'] == 1,
+      language: map['language'],
+      license: map['license_key'] != null
+          ? License(
+        key: map['license_key'],
+        name: map['license_name'],
+      )
+          : null,
+      visibility: map['visibility'],
+      topics: (map['topics'] as String).split(',').where((t) => t.isNotEmpty).toList(),
+      homepage: map['homepage'],
+      openIssuesCount: map['open_issues_count'],
+      hasIssues: map['has_issues'] == 1,
+      hasProjects: map['has_projects'] == 1,
+      hasWiki: map['has_wiki'] == 1,
+      hasDiscussions: map['has_discussions'] == 1,
+    );
+  }
+
+  Map<String, dynamic> toDb() {
     return {
+      'id': id,
       'name': name,
       'description': description,
-      'ownerName': ownerName,
-      'ownerAvatarUrl': ownerAvatarUrl,
-      'updatedAt': updatedAt.toIso8601String(),
-      'forksCount': forksCount,
-      'stargazersCount': stargazersCount,
+      'owner_login': owner.login,
+      'owner_avatar_url': owner.avatarUrl,
+      'star_count': starCount,
+      'last_updated': lastUpdated.toIso8601String(),
+      'fork': fork ? 1 : 0,
+      'forks_count': forksCount,
+      'has_downloads': hasDownloads ? 1 : 0,
       'language': language,
-      'licenseName': licenseName,
-      'openIssuesCount': openIssuesCount,
+      'license_key': license?.key,
+      'license_name': license?.name,
+      'visibility': visibility,
+      'topics': topics.join(','),
       'homepage': homepage,
+      'open_issues_count': openIssuesCount,
+      'has_issues': hasIssues ? 1 : 0,
+      'has_projects': hasProjects ? 1 : 0,
+      'has_wiki': hasWiki ? 1 : 0,
+      'has_discussions': hasDiscussions ? 1 : 0,
     };
   }
+}
+class OwnerModel extends Owner {
+  const OwnerModel({
+    required super.login,
+    required super.avatarUrl,
+  });
 
-  // Convert RepositoryModel to RepositoryEntity
-  RepositoryEntity toEntity() {
-    return RepositoryEntity(
-      name: name,
-      description: description,
-      ownerName: ownerName,
-      ownerAvatarUrl: ownerAvatarUrl,
-      updatedAt: updatedAt,
-      forksCount: forksCount,
-      stargazersCount: stargazersCount,
-      language: language,
-      licenseName: licenseName,
-      openIssuesCount: openIssuesCount,
-      homepage: homepage,
-    );
-  }
-
-  // Convert RepositoryEntity to RepositoryModel
-  factory RepositoryModel.fromEntity(RepositoryEntity entity) {
-    return RepositoryModel(
-      name: entity.name,
-      description: entity.description,
-      ownerName: entity.ownerName,
-      ownerAvatarUrl: entity.ownerAvatarUrl,
-      updatedAt: entity.updatedAt,
-      forksCount: entity.forksCount,
-      stargazersCount: entity.stargazersCount,
-      language: entity.language,
-      licenseName: entity.licenseName,
-      openIssuesCount: entity.openIssuesCount,
-      homepage: entity.homepage,
+  factory OwnerModel.fromJson(Map<String, dynamic> json) {
+    return OwnerModel(
+      login: json['login'],
+      avatarUrl: json['avatar_url'],
     );
   }
 }
