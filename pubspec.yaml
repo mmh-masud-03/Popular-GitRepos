@@ -50,16 +50,16 @@ dependencies:
 
 flutter_native_splash:
   color: "#ffffff"
-  image: assets/images/popular_git_launcher.png
-  #branding: assets/branding-development.png
+  image: assets/images/popular_git_splash.jpg
+  branding: assets/images/branding.png
   color_dark: "#121212"
-  image_dark: assets/images/popular_git_launcher.png
-  #branding_dark: assets/branding-development.png
+  image_dark: assets/images/popular_git_splash.jpg
+  branding_dark: assets/images/branding.png
 
   android_12:
-    image: assets/images/popular_git_launcher.png
+    image: assets/images/popular_git_splash.jpg
     icon_background_color: "#ffffff"
-    image_dark: assets/images/popular_git_launcher.png
+    image_dark: assets/images/popular_git_splash.jpg
     icon_background_color_dark: "#121212"
 
   web: false
