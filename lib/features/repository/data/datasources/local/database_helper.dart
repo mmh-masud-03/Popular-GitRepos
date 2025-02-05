@@ -99,7 +99,13 @@ class DatabaseHelper {
     );
   }
 
+  Future<bool> shouldFetchFromApi() async {
+    final lastSync = await getLastSyncTime();
+    if (lastSync == null) return true;
 
+    final difference = DateTime.now().difference(lastSync);
+    return difference.inHours >= 2;
+  }
 
   Future<void> insertRepository(Map<String, dynamic> repository) async {
     final Database db = await database;
