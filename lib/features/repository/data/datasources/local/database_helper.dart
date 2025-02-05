@@ -73,6 +73,33 @@ class DatabaseHelper {
     }
   }
 
+  Future<DateTime?> getLastSyncTime() async {
+    final db = await database;
+    final result = await db.query(
+      'metadata',
+      where: 'key = ?',
+      whereArgs: [_lastSyncKey],
+    );
+
+    if (result.isNotEmpty) {
+      return DateTime.parse(result.first['value'] as String);
+    }
+    return null;
+  }
+
+  Future<void> updateLastSyncTime() async {
+    final db = await database;
+    await db.insert(
+      'metadata',
+      {
+        'key': _lastSyncKey,
+        'value': DateTime.now().toIso8601String(),
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+
 
   Future<void> insertRepository(Map<String, dynamic> repository) async {
     final Database db = await database;
