@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../domain/entities/repository_entity.dart';
+import '../../../common/temp/repository_entity.dart';
 
 class FavoritesPage extends ConsumerWidget {
   const FavoritesPage({Key? key}) : super(key: key);

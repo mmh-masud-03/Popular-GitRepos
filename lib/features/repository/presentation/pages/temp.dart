@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import '../../../../core/constants/app_constants.dart';
-import '../../domain/entities/repository_entity.dart';
+import '../../../common/temp/repository_entity.dart';
 import '../../presentation/providers/repository_provider.dart';
 import '../widgets/repository_card.dart';
 

@@ -1,7 +1,7 @@
 import 'package:android_popular_git_repos/features/repository/domain/entities/repository_entity.dart';
-import '../../../../core/network/network_info.dart';
-import '../../../common/temp/local_data_source.dart';
-import '../../../common/temp/remote_data_source.dart';
+import '../../../core/network/network_info.dart';
+import 'local_data_source.dart';
+import 'remote_data_source.dart';
 
 abstract class RepositoryRepository {
   Future<List<RepositoryEntity>> getRepositories();

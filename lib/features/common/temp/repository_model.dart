@@ -1,4 +1,4 @@
-import '../../repository/domain/entities/repository_entity.dart';
+import 'repository_entity.dart';
 
 class RepositoryModel {
   final String name;

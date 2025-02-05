@@ -1,5 +1,5 @@
-import '../entities/repository_entity.dart';
-import '../repositories/repository_repository.dart';
+import '../../../common/temp/repository_entity.dart';
+import '../../../common/temp/repository_repository.dart';
 
 class GetRepositories {
   final RepositoryRepository repository;

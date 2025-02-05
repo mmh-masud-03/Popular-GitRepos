@@ -2,7 +2,7 @@
 import 'package:android_popular_git_repos/features/repository/data/models/repository_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../di/injector.dart';
-import '../../domain/entities/repository_entity.dart';
+import '../../../common/temp/repository_entity.dart';
 import '../../domain/usecases/get_repositories.dart';
 
 final repositoryProvider = FutureProvider<List<RepositoryEntity>>((ref) async {
