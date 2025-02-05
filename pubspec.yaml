@@ -45,6 +45,24 @@ dependencies:
   shared_preferences: ^2.5.1
   smooth_page_indicator: ^1.2.0+3
   connectivity_plus: ^6.1.2
+  flutter_native_splash: ^2.4.4
+
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/popular_git_launcher.png
+  #branding: assets/branding-development.png
+  color_dark: "#121212"
+  image_dark: assets/images/popular_git_launcher.png
+  #branding_dark: assets/branding-development.png
+
+  android_12:
+    image: assets/images/popular_git_launcher.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/images/popular_git_launcher.png
+    icon_background_color_dark: "#121212"
+
+  web: false
 
 dev_dependencies:
   flutter_test:
