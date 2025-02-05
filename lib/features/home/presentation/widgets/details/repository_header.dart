@@ -1,4 +1,3 @@
-// lib/features/repository_details/presentation/widgets/repository_header.dart
 import 'package:android_popular_git_repos/features/home/presentation/widgets/details/repository_header_background.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';

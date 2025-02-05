@@ -1,4 +1,3 @@
-// lib/features/repository_details/presentation/tabs/overview_tab.dart
 import 'package:flutter/material.dart';
 
 import '../../../domain/entities/repository.dart';

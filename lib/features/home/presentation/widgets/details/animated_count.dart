@@ -1,5 +1,3 @@
-
-// lib/features/repository_details/presentation/widgets/animated_count.dart
 import 'package:flutter/material.dart';
 
 class AnimatedCount extends StatelessWidget {

@@ -1,4 +1,3 @@
-
 import 'package:android_popular_git_repos/core/theme/app_theme.dart';
 import 'package:android_popular_git_repos/core/theme/theme_provider.dart';
 import 'package:flutter/material.dart';

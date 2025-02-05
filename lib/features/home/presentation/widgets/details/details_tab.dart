@@ -1,5 +1,3 @@
-
-// lib/features/repository_details/presentation/tabs/details_tab.dart
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

@@ -1,5 +1,3 @@
-
-// lib/features/home/presentation/widgets/repository_list_view.dart
 import 'package:android_popular_git_repos/features/home/presentation/widgets/home/repository_card.dart';
 import 'package:flutter/material.dart';
 

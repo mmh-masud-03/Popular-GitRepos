@@ -1,5 +1,3 @@
-
-// lib/features/repository_details/presentation/widgets/topics_list.dart
 import 'package:flutter/material.dart';
 
 class TopicsList extends StatelessWidget {

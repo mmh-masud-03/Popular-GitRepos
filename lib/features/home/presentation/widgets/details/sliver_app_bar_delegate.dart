@@ -1,4 +1,3 @@
-// lib/features/repository_details/presentation/widgets/sliver_app_bar_delegate.dart
 import 'package:flutter/material.dart';
 
 class MySliverAppBarDelegate extends SliverPersistentHeaderDelegate {

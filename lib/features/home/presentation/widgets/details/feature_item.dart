@@ -1,5 +1,3 @@
-
-// lib/features/repository_details/presentation/widgets/feature_item.dart
 import 'package:flutter/material.dart';
 
 class FeatureItem extends StatelessWidget {

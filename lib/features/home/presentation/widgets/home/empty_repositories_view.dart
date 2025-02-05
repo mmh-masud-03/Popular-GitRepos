@@ -1,4 +1,3 @@
-// lib/features/home/presentation/widgets/empty_repositories_view.dart
 import 'package:flutter/material.dart';
 
 class EmptyRepositoriesView extends StatelessWidget {

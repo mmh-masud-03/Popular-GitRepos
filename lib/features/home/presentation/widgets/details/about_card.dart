@@ -1,4 +1,3 @@
-// lib/features/repository_details/presentation/widgets/about_card.dart
 import 'package:android_popular_git_repos/features/home/presentation/widgets/details/topics_list.dart';
 import 'package:flutter/material.dart';
 

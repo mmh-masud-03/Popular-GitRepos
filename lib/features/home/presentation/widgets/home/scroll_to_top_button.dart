@@ -1,4 +1,3 @@
-// lib/features/home/presentation/widgets/scroll_to_top_button.dart
 import 'package:flutter/material.dart';
 
 class ScrollToTopButton extends StatelessWidget {
