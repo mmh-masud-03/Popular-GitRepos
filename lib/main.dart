@@ -4,8 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'core/constants/app_constants.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_provider.dart';
-import 'features/repository/presentation/pages/home_page.dart';
-import 'features/repository/presentation/pages/onboarding_page.dart';
+import 'features/common/temp/home_page.dart';
+import 'features/common/temp/onboarding_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:android_popular_git_repos/features/repository/domain/entities/repository_entity.dart';
 
-import '../pages/details_page.dart';
+import 'details_page.dart';
 
 class RepositoryCard extends StatelessWidget {
   final RepositoryEntity repository;

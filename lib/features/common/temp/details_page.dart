@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../../common/temp/repository_entity.dart';
+import 'repository_entity.dart';
 
 class RepoDetailsPage extends StatelessWidget {
   final RepositoryEntity repository;
