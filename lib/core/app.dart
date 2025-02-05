@@ -1,11 +1,11 @@
 
+import 'package:android_popular_git_repos/core/theme/app_theme.dart';
+import 'package:android_popular_git_repos/core/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:popular_git_repo/core/theme/app_theme.dart';
-import 'package:popular_git_repo/core/theme/theme_provider.dart';
-import 'package:popular_git_repo/features/home/presentation/pages/home_page.dart';
 
+import '../features/home/presentation/pages/home_page.dart';
 import '../features/home/presentation/pages/onboarding_page.dart';
 
 class GitReposApp extends ConsumerStatefulWidget {
