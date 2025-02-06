@@ -1,10 +1,11 @@
+import 'package:android_popular_git_repos/features/home/presentation/widgets/common/custom_loader.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entities/repository.dart';
 import '../providers/repositories_provider.dart';
-import '../widgets/home/custom_drawer.dart';
+import '../widgets/common/custom_drawer.dart';
 import '../widgets/home/error_view.dart';
 import '../widgets/home/home_app_bar.dart';
 import '../widgets/home/repository_list_view.dart';
@@ -91,7 +92,7 @@ class _HomePageState extends ConsumerState<HomePage>
               repositories: _filterRepositories(repositories),
               fadeController: _fadeController,
             ),
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () => const Center(child: CustomLoader(size: 50,)),
             error: (error, stack) => ErrorView(
               onRetry: () => ref.read(repositoriesProvider.notifier).refresh(),
             ),
