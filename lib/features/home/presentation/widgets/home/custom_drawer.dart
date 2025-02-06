@@ -69,18 +69,28 @@ class _CustomDrawerState extends ConsumerState<CustomDrawer> {
                         ),
                         child: CircleAvatar(
                           radius: 32,
-                          backgroundImage: CachedNetworkImageProvider(
-                            'https://avatars.githubusercontent.com/u/583231?v=4',
-
-                          ),
-                          child: ClipOval(
-                            child: CachedNetworkImage(
-                              imageUrl: 'https://avatars.githubusercontent.com/u/583231?v=4',
-                              placeholder: (context, url) => const CircularProgressIndicator(),
-                              errorWidget: (context, url, error) => const Image(image: AssetImage('assets/images/avatar.png')),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 2,
+                              ),
+                            ),
+                            child: ClipOval(
+                              child: CachedNetworkImage(
+                                imageUrl: 'https://avatars.githubusercontent.com/u/583231?v=4',
+                                placeholder: (context, url) => const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) => const Image(
+                                    image: AssetImage('assets/images/avatar.png')
+                                ),
+                                fit: BoxFit.cover, // Add this to ensure the image fills the circle
+                                width: 64, // Match with 2 * radius
+                                height: 64, // Match with 2 * radius
+                              ),
                             ),
                           ),
-                        ),
+                        )
                       ),
                       const SizedBox(height: 12),
                       Text(

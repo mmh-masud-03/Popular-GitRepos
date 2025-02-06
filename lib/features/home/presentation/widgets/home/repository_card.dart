@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import '../../../../../core/utils/format_number.dart';
 import '../../../domain/entities/repository.dart';
 
 class RepositoryCard extends StatelessWidget {
@@ -55,14 +56,26 @@ class RepositoryCard extends StatelessWidget {
     return Hero(
       tag: 'avatar-${repository.id}',
       child: CircleAvatar(
-        radius: 24,
-        backgroundImage: CachedNetworkImageProvider(repository.owner.avatarUrl)
-            ,
-        child: ClipOval(
-          child: CachedNetworkImage(
-            imageUrl: repository.owner.avatarUrl,
-            placeholder: (context, url) => const CircularProgressIndicator(),
-            errorWidget: (context, url, error) => const Image(image: AssetImage('assets/images/avatar.png')),
+        radius: 32,
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: Colors.white,
+              width: 2,
+            ),
+          ),
+          child: ClipOval(
+            child: CachedNetworkImage(
+              imageUrl: repository.owner.avatarUrl,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Image(
+                  image: AssetImage('assets/images/avatar.png')
+              ),
+              fit: BoxFit.cover, // Add this to ensure the image fills the circle
+              width: 64, // Match with 2 * radius
+              height: 64, // Match with 2 * radius
+            ),
           ),
         ),
       ),
@@ -98,7 +111,7 @@ class RepositoryCard extends StatelessWidget {
             const Icon(Icons.star, color: Colors.amber, size: 20),
             const SizedBox(width: 4),
             Text(
-              _formatNumber(repository.starCount),
+              formatNumber(repository.starCount),
               style: theme.textTheme.titleMedium,
             ),
           ],
@@ -126,9 +139,9 @@ class RepositoryCard extends StatelessWidget {
   Widget _buildBottomRow(ThemeData theme) {
     return Row(
       children: [
-        _buildStat(Icons.fork_right, _formatNumber(repository.forksCount)),
+        _buildStat(Icons.fork_right, formatNumber(repository.forksCount)),
         const SizedBox(width: 16),
-        _buildStat(Icons.bug_report, _formatNumber(repository.openIssuesCount)),
+        _buildStat(Icons.bug_report, formatNumber(repository.openIssuesCount)),
         const Spacer(),
         if (repository.topics.isNotEmpty)
           Expanded(
@@ -179,13 +192,5 @@ class RepositoryCard extends StatelessWidget {
     );
   }
 
-  String _formatNumber(int number) {
-    if (number >= 1000000) {
-      return '${(number / 1000000).toStringAsFixed(1)}M';
-    }
-    if (number >= 1000) {
-      return '${(number / 1000).toStringAsFixed(1)}K';
-    }
-    return number.toString();
-  }
+
 }
