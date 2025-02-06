@@ -56,7 +56,7 @@ class RepositoryCard extends StatelessWidget {
     return Hero(
       tag: 'avatar-${repository.id}',
       child: CircleAvatar(
-        radius: 32,
+        radius: 30,
         child: Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
@@ -73,8 +73,8 @@ class RepositoryCard extends StatelessWidget {
                   image: AssetImage('assets/images/avatar.png')
               ),
               fit: BoxFit.cover, // Add this to ensure the image fills the circle
-              width: 64, // Match with 2 * radius
-              height: 64, // Match with 2 * radius
+              width: 60, // Match with 2 * radius
+              height: 60, // Match with 2 * radius
             ),
           ),
         ),

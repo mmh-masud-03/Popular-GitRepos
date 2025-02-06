@@ -127,17 +127,5 @@ class DatabaseHelper {
     final Database db = await database;
     await db.delete('repositories');
   }
-  // You may also want to add a refresh function to force update
-  Future<void> forceRefresh() async {
-    // Reset last sync time to null to force fetch
-    final db = await database;
-    await db.delete(
-      'metadata',
-      where: 'key = ?',
-      whereArgs: [_lastSyncKey],
-    );
-    // Then call getAndroidRepositories()
 
-
-  }
 }

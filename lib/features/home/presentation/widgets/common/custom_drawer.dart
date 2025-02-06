@@ -84,7 +84,7 @@ class _CustomDrawerState extends ConsumerState<CustomDrawer> {
                                 errorWidget: (context, url, error) => const Image(
                                     image: AssetImage('assets/images/avatar.png')
                                 ),
-                                fit: BoxFit.cover, // Add this to ensure the image fills the circle
+                                fit: BoxFit.cover,
                                 width: 64, // Match with 2 * radius
                                 height: 64, // Match with 2 * radius
                               ),
