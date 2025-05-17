@@ -1,6 +1,6 @@
 # android_popular_git_repos
 
-A Flutter Project for exploring popular github repositories of Android
+A Flutter Project for exploring popular github repositories of Android. It supports offline access with synchronization and dark mode
 
 ## Getting Started
 
